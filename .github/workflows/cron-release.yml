@@ -2,7 +2,7 @@ name: trigger-auto-release
 
 on:
   schedule:
-    - cron: "0,15,30,45 * * * *"
+    - cron: "*/5 * * * *"
   # TODO: remove after testing
   push:
     branches:

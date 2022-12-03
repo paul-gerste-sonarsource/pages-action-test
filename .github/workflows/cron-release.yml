@@ -1,4 +1,4 @@
-name: trigger_auto_scan
+name: trigger-auto-release
 
 on:
   schedule:
@@ -9,7 +9,7 @@ on:
       - 'main'
 
 jobs:
-  cron:
+  auto-release:
     runs-on: ubuntu-latest
     permissions:
         contents: write
@@ -18,11 +18,11 @@ jobs:
       with:
         ref: 'gh-pages'
 
-    - uses: actions/setup-node@v2-beta
+    - uses: actions/setup-node@v3
       with:
         node-version: "19"
 
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       id: cache
       with:
         path: node_modules

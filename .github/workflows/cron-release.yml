@@ -1,0 +1,42 @@
+name: trigger_auto_scan
+
+on:
+  schedule:
+    - cron: "0,15,30,45 * * * *"
+  # TODO: remove after testing
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: 'gh-pages'
+
+    - uses: actions/setup-node@v2-beta
+      with:
+        node-version: "19"
+
+    - uses: actions/cache@v2
+      id: cache
+      with:
+        path: node_modules
+        key: ${{ hashFiles('package-lock.json') }}
+        restore-keys: npm
+
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install
+
+    - name: Generate page data and publish it
+      run: |
+        node generate.js > docs/index.html
+        git diff docs/index.html
+        git add docs/index.html
+        git commit -m "Auto-release"
+        git push

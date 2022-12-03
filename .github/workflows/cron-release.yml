@@ -37,6 +37,8 @@ jobs:
       run: |
         node generate.js > docs/index.html
         git diff docs/index.html
+        git config user.email "auto-release@example.com"
+        git config user.name "AutoRelease"
         git add docs/index.html
         git commit -m "Auto-release"
         git push
